@@ -1,3 +1,4 @@
+// src/extension.ts
 import * as vscode from "vscode";
 
 export function activate(context: vscode.ExtensionContext) {
@@ -5,13 +6,14 @@ export function activate(context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand(
     "split-view.openPreview",
     async () => {
-      // Create and show the webview panel with default URL
+      // Get the last visited URL from storage, or use default
       const defaultUrl = "https://example.com";
-      const url = new URL(defaultUrl);
+      const lastVisitedUrl =
+        context.globalState.get<string>("lastVisitedUrl") || defaultUrl;
 
       const panel = vscode.window.createWebviewPanel(
         "splitView",
-        `SplitView: ${url.host}`,
+        `SplitView: ${lastVisitedUrl}`,
         vscode.ViewColumn.Beside, // Opens in split view
         {
           enableScripts: true,
@@ -19,8 +21,8 @@ export function activate(context: vscode.ExtensionContext) {
         }
       );
 
-      // Set the HTML content of the webview with the default URL
-      updateWebviewContent(panel, defaultUrl);
+      // Set the HTML content of the webview with the last visited URL
+      updateWebviewContent(panel, lastVisitedUrl);
 
       // Handle messages from the webview
       panel.webview.onDidReceiveMessage(
@@ -31,6 +33,10 @@ export function activate(context: vscode.ExtensionContext) {
               return;
             case "updateTitle":
               panel.title = `SplitView: ${message.url}`;
+              return;
+            case "urlChanged":
+              // Save the new URL to storage
+              context.globalState.update("lastVisitedUrl", message.url);
               return;
           }
         },
@@ -155,6 +161,12 @@ function getWebviewContent(url: string): string {
           // Update title
           vscode.postMessage({
             command: 'updateTitle',
+            url: url
+          });
+          
+          // Save the URL
+          vscode.postMessage({
+            command: 'urlChanged',
             url: url
           });
           
