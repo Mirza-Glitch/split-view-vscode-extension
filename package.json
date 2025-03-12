@@ -2,7 +2,7 @@
   "name": "split-view",
   "displayName": "SplitView",
   "description": "Preview webpages in a split editor view with browser-like interface",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "mirzaglitch",
   "icon": "images/icon.png",
   "repository": {

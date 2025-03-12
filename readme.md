@@ -1,6 +1,6 @@
 # SplitView
 
-A simple VS Code extension that lets you open a browse webview right inside your editor. Perfect for testing your web apps without switching away from VS Code.
+A simple VS Code extension that lets you open a webview right inside your editor. Perfect for testing your web apps without switching away from VS Code.
 
 ## Features
 
@@ -14,12 +14,12 @@ A simple VS Code extension that lets you open a browse webview right inside your
 
 1. Open the command palette (`Ctrl+Shift+P` or `Cmd+Shift+P`)
 2. Type "SplitView: Open Web Preview" and hit Enter
-3. A new panel will open showing example.com by default
-4. Type any URL in the address bar and hit Enter to navigate
+3. Type any URL in the address bar and hit Enter to navigate
 
 ## Known Issues
 
 - Some websites with strict security policies might not load in the iframe
+- Websites which do not exist may not load in iframe
 - No support for browser extensions or cookies across sessions
 - No support for some window APIs like alert, prompt etc.
 
